@@ -23,7 +23,17 @@ int potencia(int a, int b){
     return pot;
 }
 
+int longitud(char a[]){
+    int i = 0;
+    int con;
+    for (i=0;a[i] != '\0';i++){
+        con++;
+    }
+    return i;
+}
+
 int conversorcharint(char num[]){
+    int lon=longitud(num);
     int mult=lon-1;
     int mult2=0;
     int numero=0;
@@ -40,7 +50,7 @@ int conversorcharint(char num[]){
 void decbinario(char a,char b[]){
    int numero=conversorcharint(a);
    int i=0;
-   s=7;
+   int s=7;
    while (numero>=1){
         if (numero>=potencia(2,s)){
             b[i]='1';
@@ -68,11 +78,11 @@ void codificacion::metodo1(int _bits,int _metodo,char entrada[],char salida[]){
         }
     }
     catch (char c){
-           cout<<"Error # "<<c<<": ";
-           if(c=='1'){
-               cout<<"Error al abrir el archivo para escritura.\n";
-           }
+        cout<<"Error # "<<c<<": ";
+        if(c=='1'){
+            cout<<"Error al abrir el archivo para escritura.\n";
         }
+    }
     // Obtener la posición actual en el archivo
     streampos inicio = fin.tellg();
 
@@ -97,15 +107,107 @@ void codificacion::metodo1(int _bits,int _metodo,char entrada[],char salida[]){
         if(fin.good()){
             decbinario(temp,bi);
             for (int s=0;bi[s]!='\0';s++){
-                *(binario+i)=bi[s];
+                *(binarios+i)=bi[s];
                 i++;
             }
         }
     }
+    fin.close();
     i++;
     while(i<longitudentradamodificada){
-        *(binario+i)='0';
+        *(binarios+i)='0';
     }
+    int con1=0,con0=0,clave=1;
+    char codi[_bits+1]={};
+    con=0;
+    for (int i=0;i<longitudentradamodificada;i++){
+        con++;
+       if (con<=_bits && clave == 1){
+          if (*(binarios+i)=='1'){
+                *(binarios+i)='0';
+            }
+          else{
+                 *(binarios+i)='1';
+            }
+          if (con==_bits){
+              con=0;
+              clave=0;
+          }
+        }
+       else if(con<=_bits){
+           codi[con-1]=*(binarios+i);
+           if (*(binarios+i)=='1'){
+               con1++;
+           }
+           else{
+               con0++;
+           }
+           if (con==_bits && con1==con0){
+               for (int s=0; s<_bits;s++){
+                   int ite=i-s;
+                   if (codi[s]=='1'){
+                       codi[s]='0';
+                       *(binarios+ite)=codi[s];
+                   }
+                   else{
+                       codi[s]='1';
+                       *(binarios+ite)=codi[s];
+                   }
+               }
+           }
+           if (con==_bits && con1<con0){
+               int saltos=0;
+               for (int s=0; s<_bits;s++){
+                   int ite=i-s;
+                   saltos++;
+                   if (saltos == 2 && codi[s]=='1'){
+                       codi[s]='0';
+                       *(binarios+ite)=codi[s];
+                       saltos=0;
+                   }
+                   else if(saltos == 2 && codi[s]=='0'){
+                       codi[s]='1';
+                       *(binarios+ite)=codi[s];
+                       saltos=0;
+                   }
+               }
+           }
+           if (con==_bits && con1>con0){
+               int saltos=0;
+               for (int s=0; s<_bits;s++){
+                   int ite=i-s;
+                   saltos++;
+                   if (saltos == 3 && codi[s]=='1'){
+                       codi[s]='0';
+                       *(binarios+ite)=codi[s];
+                       saltos=0;
+                   }
+                   else if(saltos == 3 && codi[s]=='0'){
+                       codi[s]='1';
+                       *(binarios+ite)=codi[s];
+                       saltos=0;
+                   }
+               }
+           }
+           con=0;
+           con1=0;
+           con0=0;
+       }
 
-    fin.close();                //Cierra el archivo de lectura.
+    }
+    try{
+        fout.open(salida);
+        if(!fout.is_open()){
+            throw '2';
+
+        }
+    }
+    catch (char c){
+        cout<<"Error # "<<c<<": ";
+        if(c=='2'){
+            cout<<"Error al abrir el archivo para lectura.\n";
+        }
+    }
+    fout.write(binarios,longitudentradamodificada);
+    fout.close();
 }

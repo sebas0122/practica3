@@ -18,4 +18,5 @@ public:
 int potencia(int a, int b);
 int conversorcharint(char num[]);
 void decbinario(char a,char b[]);
+int longitud(char a[]);
 #endif // CYFSCODIFICACION_H
