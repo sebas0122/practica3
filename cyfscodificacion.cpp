@@ -32,18 +32,8 @@ int longitud(char a[]){
     return i;
 }
 
-int conversorcharint(char num[]){
-    int lon=longitud(num);
-    int mult=lon-1;
-    int mult2=0;
-    int numero=0;
-    int numint=0;
-    for (int i; i!='\0';i++){
-        numero=static_cast<int>(num[i]) - 48;
-        mult2=potencia(10,mult);
-        numint+=numero*mult2;
-        mult--;
-    }
+int conversorcharint(char num){
+    int numint=num;
     return numint;
 }
 
@@ -62,6 +52,15 @@ void decbinario(char a,char b[]){
         i++;
         s--;
     }
+}
+
+void cambiaposicion(char a[]){
+    int lon=longitud(a);
+    char primero=a[0];
+    for (int i=1; i<lon;i++){
+        a[i-1]=a[i];
+    }
+    a[lon-1]=primero;
 }
 
 void codificacion::metodo1(int _bits,int _metodo,char entrada[],char salida[]){
@@ -211,3 +210,92 @@ void codificacion::metodo1(int _bits,int _metodo,char entrada[],char salida[]){
     fout.write(binarios,longitudentradamodificada);
     fout.close();
 }
+
+void codificacion::metodo2(int _bits,int _metodo,char entrada[],char salida[]){
+    int longitudentrada=0;
+    int longitudsalida=0;
+    char *binarios;
+    ifstream fin;
+    ofstream fout;
+    try{
+        fin.open(entrada);
+        if(!fin.is_open()){
+            throw '1';
+
+        }
+    }
+    catch (char c){
+        cout<<"Error # "<<c<<": ";
+        if(c=='1'){
+            cout<<"Error al abrir el archivo para escritura.\n";
+        }
+    }
+    // Obtener la posición actual en el archivo
+    streampos inicio = fin.tellg();
+
+    // Mover la posición actual al final del archivo
+    fin.seekg(0, ios::end);
+    streampos fin2 = fin.tellg();
+
+    // Calcular el número de caracteres en el archivo
+    longitudentrada = static_cast<int>(fin2 - inicio);
+    int con=0;
+    int longitudentradamodificada=longitudentrada*8;
+    while (longitudentradamodificada%_bits!=0){
+        con++;
+        longitudentradamodificada=longitudentradamodificada+con;
+    }
+    binarios=new char[(longitudentradamodificada)+1];
+    char bi[9]={};
+    int i=0;
+
+    while(fin.good()){              //lee caracter a caracter hasta el fin del archivo
+        char temp=fin.get();
+        if(fin.good()){
+            decbinario(temp,bi);
+            for (int s=0;bi[s]!='\0';s++){
+                *(binarios+i)=bi[s];
+                i++;
+            }
+        }
+    }
+    fin.close();
+    i++;
+    while(i<longitudentradamodificada){
+        *(binarios+i)='0';
+    }
+    con=0;
+    for (int i=0;i<longitudentradamodificada;i++){
+        con++;
+        char separador[_bits];
+        if (con<_bits){
+            separador[con-1]=*(binarios+i);
+        }
+        else{
+            separador[con-1]=*(binarios+i);
+            cambiaposicion(separador);
+            for (int s=0;s<_bits;s++){
+                int t=i-(_bits-1)+s;
+                *(binarios+t)=separador[s];
+                con=0;
+            }
+        }
+    }
+    try{
+        fout.open(salida);
+        if(!fout.is_open()){
+            throw '2';
+
+        }
+    }
+    catch (char c){
+        cout<<"Error # "<<c<<": ";
+        if(c=='2'){
+            cout<<"Error al abrir el archivo para lectura.\n";
+        }
+    }
+    fout.write(binarios,longitudentradamodificada);
+    fout.close();
+}
+
+
