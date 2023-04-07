@@ -1,16 +1,6 @@
-#include <cyfscodificacion.h>
+#include <codistream.h>
 
-void nombretrada(char _enter[]){
-    cout<<"ingrese el nombre del archivo de entrada: ";
-    cin.getline(_enter, sizeof(_enter));
-}
-
-void nombresalida(char _out[]){
-    cout<<"ingrese el nombre del archivo de salida: ";
-    cin.getline(_out, sizeof(_out));
-}
-
-int potencia(int a, int b){
+int spotencia(int a, int b){
     int i=2;
     int pot=a;
     if (b==0){
@@ -23,49 +13,35 @@ int potencia(int a, int b){
     return pot;
 }
 
-int longitud(char a[]){
-    int i = 0;
-    int con;
-    for (i=0;a[i] != '\0';i++){
-        con++;
-    }
-    return i;
-}
-
-int conversorcharint(char num){
-    int numint=num;
-    return numint;
-}
-
-void decbinario(char a,char b[]){
-   int numero=conversorcharint(a);
+string sdecbinario(char a,string b){
+   int numero=a;
    int i=0;
    int s=7;
    while (i<8){
-        if (numero>=potencia(2,s)){
-            b[i]='1';
-            numero=numero-potencia(2,s);
+        if (numero>=spotencia(2,s)){
+            b+='1';
+            numero=numero-spotencia(2,s);
         }
         else{
-           b[i]='0';
+           b+='0';
         }
         i++;
         s--;
     }
+   return b;
 }
 
-void cambiaposicion(char a[]){
-    int lon=longitud(a);
+string scambiaposicion(string a){
+    int lon=a.size();
     char primero=a[lon-1];
     for (int i=lon-1; i>0;i--){
         a[i]=a[i-1];
     }
     a[0]=primero;
+    return a;
 }
 
-void metodo1(int _bits,int _metodo,char entrada[],char salida[]){
-    int longitudentrada=0;
-    int longitudsalida=0;
+void smetodo1(int _bits,int _metodo,string entrada,string salida){
     ifstream fin;
     ofstream fout;
     try{
@@ -81,44 +57,27 @@ void metodo1(int _bits,int _metodo,char entrada[],char salida[]){
             cout<<"Error al abrir el archivo para escritura.\n";
         }
     }
-    // Obtener la posición actual en el archivo
-    streampos inicio = fin.tellg();
-
-    // Mover la posición actual al final del archivo
-    fin.seekg(0, ios::end);
-    streampos fin2 = fin.tellg();
-
-    // Calcular el número de caracteres en el archivo
-    longitudentrada = static_cast<int>(fin2 - inicio);
-    int con=0;
-    int longitudentradamodificada=longitudentrada*8;
-    while (longitudentradamodificada%_bits!=0){
-        con++;
-        longitudentradamodificada=longitudentradamodificada+con;
-    }
-    char binarios[(longitudentradamodificada)+1]={};
-    char bi[9]={};
-    int i=0;
+    string binarios="";
+    string bi="";
     fin.seekg(0);
     while(fin.good()){
         char temp=fin.get();
         if(fin.good()){
-            decbinario(temp,bi);
-            for (int s=0;bi[s]!='\0';s++){
-                binarios[i]=bi[s];
-                i++;
-            }
+            bi=sdecbinario(temp,bi);
+            binarios+=bi;
+            bi="";
         }
     }
-    fin.close();
-    while(i<longitudentradamodificada){
-        i++;
-        binarios[i]='0';
+    while (binarios.size()%_bits!=0){
+        binarios+='0';
     }
-    int con1=0,con0=0,clave=1;
-    char codi[_bits+1]={};
-    con=0;
-    for (int i=0;i<longitudentradamodificada;i++){
+    fin.close();
+    int con1=0,con0=0,clave=1,con=0;
+    string codi="";
+    while (codi.size()!=_bits){
+        codi+='0';
+    }
+    for (int i=0;i<binarios.size();i++){
         con++;
        if (con<=_bits && clave == 1){
           if (binarios[i]=='1'){
@@ -196,7 +155,6 @@ void metodo1(int _bits,int _metodo,char entrada[],char salida[]){
                }
             }
        }
-
     }
     try{
         fout.open(salida);
@@ -211,13 +169,11 @@ void metodo1(int _bits,int _metodo,char entrada[],char salida[]){
             cout<<"Error al abrir el archivo para lectura.\n";
         }
     }
-    fout.write(binarios,longitudentradamodificada);
+    fout<<binarios;
     fout.close();
 }
 
-void metodo2(int _bits,int _metodo,char entrada[],char salida[]){
-    int longitudentrada=0;
-    int longitudsalida=0;
+void smetodo2(int _bits,int _metodo,string entrada,string salida){
     ifstream fin;
     ofstream fout;
     try{
@@ -233,54 +189,36 @@ void metodo2(int _bits,int _metodo,char entrada[],char salida[]){
             cout<<"Error al abrir el archivo para escritura.\n";
         }
     }
-    // Obtener la posición actual en el archivo
-    streampos inicio = fin.tellg();
-
-    // Mover la posición actual al final del archivo
-    fin.seekg(0, ios::end);
-    streampos fin2 = fin.tellg();
-
-    // Calcular el número de caracteres en el archivo
-    longitudentrada = static_cast<int>(fin2 - inicio);
-    int con=0;
-    int longitudentradamodificada=longitudentrada*8;
-    while (longitudentradamodificada%_bits!=0){
-        con++;
-        longitudentradamodificada=longitudentradamodificada+con;
-    }
-    char binarios[(longitudentradamodificada)+1]={};
-    char bi[9]={};
-    int i=0;
+    string binarios="";
+    string bi="";
     fin.seekg(0);
     while(fin.good()){
         char temp=fin.get();
         if(fin.good()){
-            decbinario(temp,bi);
-            for (int s=0;bi[s]!='\0';s++){
-                binarios[i]=bi[s];
-                i++;
-            }
+            bi=sdecbinario(temp,bi);
+            binarios+=bi;
+            bi="";
         }
+    }
+    while (binarios.size()%_bits!=0){
+        binarios+='0';
     }
     fin.close();
-    i++;
-    while(i<longitudentradamodificada){
-        binarios[i]='0';
-    }
-    con=0;
-    char separador[_bits+1]={};
-    for (int i=0;i<longitudentradamodificada;i++){
+    int con=0;
+    string separador="";
+    for (int i=0;i<binarios.size();i++){
         con++;
         if (con<_bits){
-            separador[con-1]=binarios[i];
+            separador+=binarios[i];
         }
         else{
-            separador[con-1]=binarios[i];
-            cambiaposicion(separador);
+            separador+=binarios[i];
+            separador=scambiaposicion(separador);
             for (int s=0;s<_bits;s++){
                 int t=i-(_bits-1)+s;
                 binarios[t]=separador[s];
                 con=0;
+                separador="";
             }
         }
     }
@@ -297,15 +235,15 @@ void metodo2(int _bits,int _metodo,char entrada[],char salida[]){
             cout<<"Error al abrir el archivo para lectura.\n";
         }
     }
-    fout.write(binarios,longitudentradamodificada);
+    fout<<binarios;
     fout.close();
 }
 
-void codi(){
+void scodi(){
     int nbits=0;
     int metodo=0;
-    char entra[99]={};
-    char sale[99]={};
+    string entra="";
+    string sale="";
     while (nbits<=0){
         cout<<"ingrese el numero con el que desea agrupar los bits: ";
         cin>>nbits;
@@ -319,11 +257,9 @@ void codi(){
     cout<<"ingrese el nombre del archivo de salida: ";
     cin>>sale;
     if (metodo==1){
-        metodo1(nbits,metodo,entra,sale);
+        smetodo1(nbits,metodo,entra,sale);
     }
     else if (metodo==2){
-        metodo2(nbits,metodo,entra,sale);
+        smetodo2(nbits,metodo,entra,sale);
     }
 }
-
-

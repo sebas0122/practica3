@@ -1,13 +1,14 @@
 #include <iostream>
-#include "cyfscodificacion.h"
+#include "codistream.h"
 #include "decodificacioncaracteres.h"
+#include "decostream.h"
 
 using namespace std;
 void prueba();
 
 int main()
 {
-    deco();
+    sdeco();
     return 0;
 }
 
