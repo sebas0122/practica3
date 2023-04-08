@@ -102,7 +102,7 @@ void deco1(int _bits,int _metodo,char entrada[],char salida[]){
               clave=2;
           }
         }
-       if (con<_bits){
+       if (con<_bits && con>=1){
         codi[con-1]=binarios[i];
        }
        else if(con ==_bits){
@@ -152,7 +152,7 @@ void deco1(int _bits,int _metodo,char entrada[],char salida[]){
                        saltos=0;
                    }
                    else if(saltos == 3 && codi[s]=='0'){
-                       codi[s]='0';
+                       codi[s]='1';
                        binarios[ite]='1';
                        saltos=0;
                    }

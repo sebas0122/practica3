@@ -134,7 +134,7 @@ void sdeco1(int _bits,int _metodo,string entrada,string salida){
                        saltos=0;
                    }
                    else if(saltos == 3 && codi[s]=='0'){
-                       codi[s]='0';
+                       codi[s]='1';
                        binarios[ite]='1';
                        saltos=0;
                    }

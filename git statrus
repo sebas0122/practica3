@@ -1,0 +1,29 @@
+[33mcommit 867c623f5e1c67f8d8bc91c3b9da6ce51d9a261e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: sebas0122 <jsebastian.marin1@udea.edu.co>
+Date:   Fri Apr 7 11:59:57 2023 -0500
+
+    Se corrige condicional con<=_bits agregandole la condicion c>0. Ta,bien se completa toda la codificacion y la decodificacion con la libreria string
+
+[33mcommit 29abdc788d18f6eaf35a7c04a7176418e162c142[m
+Author: sebas0122 <jsebastian.marin1@udea.edu.co>
+Date:   Wed Apr 5 18:54:38 2023 -0500
+
+    se prueba todo lo que se llevaba haciendo correcciones de logica y funcionamiento. Se agrega la decodificacion de ambos metodos por chars
+
+[33mcommit d0b76e18e0e7b40b03a48dfde86d3db9446f0e6d[m
+Author: sebas0122 <jsebastian.marin1@udea.edu.co>
+Date:   Mon Apr 3 15:01:42 2023 -0500
+
+    Se hace el segundo metodo para codificar con arreglos tipo char
+
+[33mcommit 93cde2fc7c260a12690c9dce74cf0096d9ac0cf6[m
+Author: sebas0122 <jsebastian.marin1@udea.edu.co>
+Date:   Sat Apr 1 12:03:13 2023 -0500
+
+    se encriptan los  caracteres binarios por el metodo 1 y se guardan estos nuevo binarios en otro archivo
+
+[33mcommit 0249cb9de4e3e327e728920d8b14f6f654bfea7f[m
+Author: sebas0122 <jsebastian.marin1@udea.edu.co>
+Date:   Sat Apr 1 09:53:14 2023 -0500
+
+    primer avance practica 3. Se llega hasta donde se codifica el aarchivo

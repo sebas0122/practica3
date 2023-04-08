@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        aplicacion.cpp \
         codistream.cpp \
         cyfscodificacion.cpp \
         decodificacioncaracteres.cpp \
@@ -11,6 +12,7 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
+    aplicacion.h \
     codistream.h \
     cyfscodificacion.h \
     decodificacioncaracteres.h \

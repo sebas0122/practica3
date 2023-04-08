@@ -90,11 +90,9 @@ void metodo1(int _bits,int _metodo,char entrada[],char salida[]){
 
     // Calcular el número de caracteres en el archivo
     longitudentrada = static_cast<int>(fin2 - inicio);
-    int con=0;
     int longitudentradamodificada=longitudentrada*8;
     while (longitudentradamodificada%_bits!=0){
-        con++;
-        longitudentradamodificada=longitudentradamodificada+con;
+        longitudentradamodificada++;
     }
     char binarios[(longitudentradamodificada)+1]={};
     char bi[9]={};
@@ -112,12 +110,12 @@ void metodo1(int _bits,int _metodo,char entrada[],char salida[]){
     }
     fin.close();
     while(i<longitudentradamodificada){
-        i++;
         binarios[i]='0';
+        i++;
     }
     int con1=0,con0=0,clave=1;
     char codi[_bits+1]={};
-    con=0;
+    int con=0;
     for (int i=0;i<longitudentradamodificada;i++){
         con++;
        if (con<=_bits && clave == 1){
@@ -242,11 +240,9 @@ void metodo2(int _bits,int _metodo,char entrada[],char salida[]){
 
     // Calcular el número de caracteres en el archivo
     longitudentrada = static_cast<int>(fin2 - inicio);
-    int con=0;
     int longitudentradamodificada=longitudentrada*8;
     while (longitudentradamodificada%_bits!=0){
-        con++;
-        longitudentradamodificada=longitudentradamodificada+con;
+        longitudentradamodificada++;
     }
     char binarios[(longitudentradamodificada)+1]={};
     char bi[9]={};
@@ -263,11 +259,11 @@ void metodo2(int _bits,int _metodo,char entrada[],char salida[]){
         }
     }
     fin.close();
-    i++;
     while(i<longitudentradamodificada){
         binarios[i]='0';
+        i++;
     }
-    con=0;
+    int con=0;
     char separador[_bits+1]={};
     for (int i=0;i<longitudentradamodificada;i++){
         con++;
